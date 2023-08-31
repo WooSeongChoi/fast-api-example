@@ -1,0 +1,35 @@
+# Test todo endpoint
+
+GET http://127.0.0.1:8000/todo/
+Accept: application/json
+###
+
+
+POST http://127.0.0.1:8000/todo/
+Accept: application/json
+Content-Type: application/json
+
+< ./data/add_todo_01.json
+###
+
+
+POST http://127.0.0.1:8000/todo/
+Accept: application/json
+Content-Type: application/json
+
+< ./data/add_todo_02.json
+###
+
+
+POST http://127.0.0.1:8000/todo/
+Accept: application/json
+Content-Type: application/json
+
+< ./data/add_wrong_todo.json
+###
+
+
+GET http://127.0.0.1:8000/todo/1
+Accept: application/json
+
+###
