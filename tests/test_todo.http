@@ -33,3 +33,14 @@ GET http://127.0.0.1:8000/todo/1
 Accept: application/json
 
 ###
+
+
+PUT http://127.0.0.1:8000/todo/1
+Accept: application/json
+Content-Type: application/json
+
+< ./data/put_todo_01.json
+###
+
+DELETE http://127.0.0.1:8000/todo/1
+###
