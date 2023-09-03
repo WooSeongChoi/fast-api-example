@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Path
+from fastapi import APIRouter, Path, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from schema import Todo, TodoItem
+from schema import Todo, TodoItem, TodoItems
 
 todo_router = APIRouter()
 
@@ -10,6 +10,7 @@ todo_list = []
 
 @todo_router.post(
     "/todo",
+    status_code=201,
     responses={201: {"message": str}}
 )
 async def add_todo(todo: Todo) -> JSONResponse:
@@ -22,12 +23,13 @@ async def add_todo(todo: Todo) -> JSONResponse:
 
 @todo_router.get(
     "/todo",
+    response_model=TodoItems,
     responses={200: {"todos": list}}
 )
 async def retrieve_todos() -> JSONResponse:
     return JSONResponse(
         status_code=200,
-        content={"todos": [jsonable_encoder(todo) for todo in todo_list]}
+        content={"todos": jsonable_encoder(todo_list)}
     )
 
 
@@ -41,9 +43,9 @@ async def get_single_todo(
                 status_code=200,
                 content={"todo": jsonable_encoder(todo)}
             )
-    return JSONResponse(
+    raise HTTPException(
         status_code=404,
-        content={"message": "Todo with supplied ID doesn't exist."}
+        detail={"message": "Todo with supplied ID doesn't exist."}
     )
 
 
@@ -59,14 +61,15 @@ async def update_todo(
                 status_code=200,
                 content={"message": "Todo updated successfully."}
             )
-    return JSONResponse(
+    raise HTTPException(
         status_code=404,
-        content={"message": "Todo with supplied ID doesn't exist."}
+        detail={"message": "Todo with supplied ID doesn't exist."}
     )
 
 
 @todo_router.delete(
     "/todo/{todo_id}",
+    status_code=204,
     responses={204: {"message": str}}
 )
 async def delete_single_todo(todo_id: int) -> JSONResponse:
@@ -78,7 +81,7 @@ async def delete_single_todo(todo_id: int) -> JSONResponse:
                 status_code=204,
                 content={"message": "Todo deleted successfully."}
             )
-    return JSONResponse(
+    raise HTTPException(
         status_code=404,
-        content={"message": "Todo with supplied ID doesn't exist."}
+        detail={"message": "Todo with supplied ID doesn't exist."}
     )

@@ -44,3 +44,14 @@ Content-Type: application/json
 
 DELETE http://127.0.0.1:8000/todo/1
 ###
+
+
+POST http://127.0.0.1:8000/todo/
+Accept: application/json
+Content-Type: application/json
+
+< ./data/add_todo_03.json
+###
+
+GET http://127.0.0.1:8000/todo/
+###
